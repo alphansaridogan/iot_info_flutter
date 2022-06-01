@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'iot_info_model.dart';
 import 'package:http/http.dart' as http ;
 
 class IotService {
-  final String IotUrl = 'https://api.thingspeak.com/channels/1743287/feeds.json?results=2';
+  final String IotUrl = 'https://cdn2021.sepetta.com/alp/test.txt';
+
 
 
   Future<IotInfoModel?> fetchInfo() async {
@@ -22,7 +21,4 @@ class IotService {
   }
 
 }
-final IotServiceProvider = Provider((ref){
-return IotService();
-});
 

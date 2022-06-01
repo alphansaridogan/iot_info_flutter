@@ -1,4 +1,8 @@
 
+import 'dart:async';
+import 'package:get/get.dart';
+
+import 'iot_informations/iot_info_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/iot_informations/iot_info_service.dart';
@@ -18,18 +22,30 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final IotService _service= IotService();   //---
-  List<IotInfoModelFeeds?>? infos= [];  //---
+  List<IotInfoModelFeeds?>? infos;  //---
 
+  var OrtamSicakik ="".obs;
+  var OrtamNem = "".obs;
+  var ToprakNem = "".obs;
+  var Saat= "".obs;
 
   @override
   void initState() {
+    getir();
+    _service.fetchInfo();
+    Timer.periodic(const Duration(seconds: 10), (timer) => getir());
     super.initState();
+  }
+
+  void getir(){
     _service.fetchInfo().then((value) {
-     if(value!=null && value.feeds!=null) {
-       setState ((){
-         infos = value.feeds;
-       });
-     }
+      if(value!=null && value.feeds!=null) {
+        print(value);
+        setState ((){
+          infos = value.feeds;
+          //var t = infos?[0];
+        });
+      }
     });
   }
 
@@ -37,10 +53,16 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     //TODO indexsiz kullanmak lazım
-    String OrtamSicakik = '%${infos![0]!.field1}';
-    String OrtamNem = '%${infos![0]!.field2}';
-    String ToprakNem = '%${infos![0]!.field3}';
-    String Saat= '${infos![0]!.acc}';
+
+
+
+    if (infos != null ){
+      OrtamSicakik.value = '%${infos?[0]?.field1 ?? ""}';
+      OrtamNem.value = '%${infos?[0]?.field2 ?? ""}';
+      ToprakNem.value = '%${infos?[0]?.field3 ?? ""}';
+      Saat.value = '${infos?[0]?.acc ?? ""}';
+    }
+
     return MaterialApp(
       title: 'Sıcaklık ve Nem Ölçer',
       home: Center(
@@ -71,7 +93,7 @@ class _MyAppState extends State<MyApp> {
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
                             ),
-                            Text(OrtamSicakik),
+                            Text(OrtamSicakik.value),
                           ],
                         )
                     ),
@@ -91,7 +113,7 @@ class _MyAppState extends State<MyApp> {
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
                             ),
-                            Text(OrtamNem),
+                            Text(OrtamNem.value),
                           ],
                         )
                     ),
@@ -117,7 +139,7 @@ class _MyAppState extends State<MyApp> {
                           style:  TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold),
                         ),
-                        Text(ToprakNem),
+                        Text(ToprakNem.value),
                       ],
                     )
                 ),
@@ -125,7 +147,7 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(
                 height: 8,
               ),
-              Text(Saat,
+              Text(Saat.value,
                 textAlign: TextAlign.center,
               ),
               ElevatedButton(
@@ -143,6 +165,7 @@ class _MyAppState extends State<MyApp> {
   }
 
 }
+
 
 /*ListView.builder(
 itemCount: infos!.length,
