@@ -28,6 +28,11 @@ class _MyAppState extends State<MyApp> {
   var OrtamNem = "".obs;
   var ToprakNem = "".obs;
   var Saat= "".obs;
+  var OrtamNemDouble;
+  var OrtamNemInt;
+  var OrtamSicaklikDouble;
+  var OrtamSicaklikInt;
+  var ToprakNemInt;
 
   @override
   void initState() {
@@ -57,11 +62,23 @@ class _MyAppState extends State<MyApp> {
 
 
     if (infos != null ){
-      OrtamSicakik.value = '%${infos?[0]?.field1 ?? ""}';
-      OrtamNem.value = '%${infos?[0]?.field2 ?? ""}';
-      ToprakNem.value = '%${infos?[0]?.field3 ?? ""}';
+      OrtamSicakik.value = '${infos?[0]?.field1 ?? ""}';
+      OrtamNem.value = '${infos?[0]?.field2 ?? ""}';
+      ToprakNem.value = '${infos?[0]?.field3 ?? ""}';
       Saat.value = '${infos?[0]?.acc ?? ""}';
     }
+    if (OrtamNem.value != "" && OrtamNem.value != null) {
+      OrtamNemDouble = double.parse(OrtamNem.value);
+      OrtamNemInt = OrtamNemDouble.toInt();
+    }
+    if (OrtamSicakik.value != "" && OrtamSicakik.value != null) {
+      OrtamSicaklikDouble = double.parse(OrtamSicakik.value);
+      OrtamSicaklikInt = OrtamSicaklikDouble.toInt();
+    }
+    if (ToprakNem.value != "" && ToprakNem.value != null) {
+      ToprakNemInt = int.parse(ToprakNem.value);
+    }
+
 
     return MaterialApp(
       title: 'Sıcaklık ve Nem Ölçer',
@@ -93,7 +110,10 @@ class _MyAppState extends State<MyApp> {
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
                             ),
-                            Text(OrtamSicakik.value),
+                            Text('$OrtamSicaklikInt°C',
+                              style: TextStyle(
+                                fontSize: 30,
+                              ),),
                           ],
                         )
                     ),
@@ -113,7 +133,10 @@ class _MyAppState extends State<MyApp> {
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
                             ),
-                            Text(OrtamNem.value),
+                            Text('%$OrtamNemInt',
+                              style: TextStyle(
+                                fontSize: 30,
+                              ),),
                           ],
                         )
                     ),
@@ -139,7 +162,10 @@ class _MyAppState extends State<MyApp> {
                           style:  TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold),
                         ),
-                        Text(ToprakNem.value),
+                        Text('%$ToprakNemInt',
+                        style: TextStyle(
+                          fontSize: 30,
+                        ),),
                       ],
                     )
                 ),
@@ -149,13 +175,6 @@ class _MyAppState extends State<MyApp> {
               ),
               Text(Saat.value,
                 textAlign: TextAlign.center,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      //TODO refresh yapması lazım
-                    });
-                  }, child: Text('asd'),
               ),
             ],
           ),
