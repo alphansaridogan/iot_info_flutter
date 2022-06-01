@@ -4,7 +4,7 @@ import 'iot_info_model.dart';
 import 'package:http/http.dart' as http ;
 
 class IotService {
-  final String IotUrl = 'https://cdn2021.sepetta.com/alp/test.txt';
+  final String IotUrl = 'https://api.thingspeak.com/channels/1743287/feeds.json?results=2';
 
 
 
